@@ -2,7 +2,7 @@
 
 namespace DotNetChatReactApp.Migrations
 {
-    public partial class createTables : Migration
+    public partial class newTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

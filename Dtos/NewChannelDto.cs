@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DotNetChatReactApp.Models
+namespace DotNetChatReactApp.Dtos
 {
-    public class Channel
+    public class NewChannelDto
     {
-
         public int Id { get; set; }
         public string Name { get; set; }
-    
     }
 }

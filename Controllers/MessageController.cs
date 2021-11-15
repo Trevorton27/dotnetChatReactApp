@@ -36,11 +36,6 @@ namespace DotNetChatReactApp.Controllers
         }
 
 
-        //[HttpGet("getmessages")]
-        //public List<Message> GetMessages()
-        //{
-
-        //}
 
         [HttpPost("message")]
         public async Task<IActionResult> PostMessage([FromBody] NewMessageDto messageDto)
@@ -51,25 +46,28 @@ namespace DotNetChatReactApp.Controllers
             if (sessionToken == null) return BadRequest(new { message = "You are unauthorized" });
             try
             {
-
                 var user = _userService.GetById(messageDto.UserId);
 
                 var message = new Message
                 {
                     Text = messageDto.Text,
                     Username = messageDto.Username,
-                    UserId = messageDto.UserId
+                    UserId = messageDto.UserId,
+                    ChannelId = messageDto.ChannelId
 
                 };
 
 
                 _context.Messages.Add(message);
                 await _context.SaveChangesAsync();
-                await _hubContext.Clients.All.ReceiveMessage( message);
+                await _hubContext.Clients.All.ReceiveMessage(message);
 
                 return Ok(message);
 
-          
+
+
+
+
             }
             catch (Exception ex)
             {
@@ -81,9 +79,7 @@ namespace DotNetChatReactApp.Controllers
         [HttpGet("getallmessages")]
         public async Task<IActionResult> GetMessages()
         {
-            //var sessionToken = HttpContext.Request.Cookies["token"];
-            //if (sessionToken == null) return BadRequest(new { message = "You are unauthorized" });
-            //int userId = _userService.GetById(dto.UserId == User.Id);
+         
 
             var messages = await _messageService.GetAllMessages();
             Console.WriteLine(messages);

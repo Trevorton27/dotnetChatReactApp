@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SendMessageForm from '../Components/SendMessageForm';
-import MessageContainer from '../Components/MessageContainer';
+import MessageDisplay from '../Components/MessageDisplay';
 import axios from 'axios';
 // import { useHistory } from 'react-router-dom';
 import { HubConnectionBuilder } from '@microsoft/signalr';
@@ -10,39 +10,42 @@ import { HubConnectionBuilder } from '@microsoft/signalr';
 const ChatPage = ({ isLoggedIn, userName, userId }) => {
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [connection, setConnection] = useState();
 
   // const getUsers = async () => {
   //   axios.get('api/users');
   // };
 
   useEffect(() => {
-    try {
-      const connection = new HubConnectionBuilder()
-        .withUrl('hubs/chat')
-        .withAutomaticReconnect()
-        .build();
+    if (isLoggedIn) {
+      try {
+        const connection = new HubConnectionBuilder()
+          .withUrl('hubs/chat')
+          .withAutomaticReconnect()
+          .build();
 
-      connection.start().then(() => {
-        console.log('Connected!');
-        const newMessage = {
-          Username: userName,
-          Text: messages,
-          UserId: userId
-        };
-        connection.on('ReceiveMessage', (username, text) => {
-          const updateChat = [...messages];
-          updateChat.push(newMessage);
-          getAllMessages();
+        connection.start().then(() => {
+          console.log('Connected!');
+          const newMessage = {
+            Username: userName,
+            Text: messages,
+            UserId: userId
+          };
+          connection.on('ReceiveMessage', (username, text) => {
+            const updateChat = [...messages];
+            updateChat.push(newMessage);
+            getAllMessages();
+          });
         });
-      });
-    } catch (e) {
-      console.log('Connection failed: ', e);
+      } catch (e) {
+        console.log('Connection failed: ', e);
+      }
     }
   }, []);
 
   useEffect(() => {
-    getAllMessages();
+    if (isLoggedIn) {
+      getAllMessages();
+    }
   }, []);
 
   const sendMessage = async (message, userName, userId) => {
@@ -76,19 +79,15 @@ const ChatPage = ({ isLoggedIn, userName, userId }) => {
 
   return (
     <div>
-      {isLoggedIn ? (
-        <div className='chat'>
-          Welcome to the chat page {userName}.
-          <MessageContainer messages={messages} />
-          <SendMessageForm
-            userId={userId}
-            userName={userName}
-            sendMessage={sendMessage}
-          />
-        </div>
-      ) : (
-        'You are not authorized to view this page. Please register and/or login. '
-      )}{' '}
+      <div className='chat'>
+        Welcome to the chat page {userName}.
+        <MessageDisplay messages={messages} />
+        <SendMessageForm
+          userId={userId}
+          userName={userName}
+          sendMessage={sendMessage}
+        />
+      </div>
     </div>
   );
 };

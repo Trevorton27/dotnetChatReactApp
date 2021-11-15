@@ -9,7 +9,7 @@ import {
 import Login from './Pages/Login';
 import './App.css';
 import Navbar from './Components/NavBar';
-import ChatPage from './Pages/ChatPage';
+import MainPage from './Pages/MainPage';
 import Register from './Pages/Register';
 import axios from 'axios';
 
@@ -51,7 +51,7 @@ function App() {
             exact
             render={() =>
               isLoggedIn ? (
-                <ChatPage
+                <MainPage
                   userId={userId}
                   userName={userName}
                   isLoggedIn={isLoggedIn}

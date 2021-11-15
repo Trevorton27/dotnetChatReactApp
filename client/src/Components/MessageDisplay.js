@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const MessageContainer = ({ messages }) => {
+const MessageDisplay = ({ messages }) => {
   const messageRef = useRef();
 
   useEffect(() => {
@@ -26,4 +26,4 @@ const MessageContainer = ({ messages }) => {
   );
 };
 
-export default MessageContainer;
+export default MessageDisplay;
