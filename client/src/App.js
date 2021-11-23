@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Redirect,
-  Switch
+  useHistory
 } from 'react-router-dom';
 //import {  Redirect } from 'react-router';
 import Login from './Pages/Login';
@@ -17,8 +17,29 @@ function App() {
   const [userName, setUserName] = useState('');
   const [userId, setUserId] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setToken] = useState('');
-  console.log('token: ', token);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const history = useHistory();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('api/login', {
+        email,
+        password
+      });
+
+      console.log('response from login: ', response);
+      sessionStorage.setItem('token', response.data);
+
+      if (sessionStorage.getItem('token')) {
+        setIsLoggedIn(true);
+        history.push('/');
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   useEffect(() => {
     getUser();
@@ -71,11 +92,9 @@ function App() {
                 <Redirect to='/' />
               ) : (
                 <Login
-                  setUserName={setUserName}
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  setToken={setToken}
-                  token={token}
+                  handleLogin={handleLogin}
+                  setEmail={setEmail}
+                  setPassword={setPassword}
                 />
               )
             }

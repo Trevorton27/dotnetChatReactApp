@@ -3,10 +3,11 @@ import ChannelDisplay from '../Components/ChannelDisplay';
 import { Container, Row, Col } from 'react-bootstrap';
 
 const Mainpage = (userId, userName, isLoggedIn) => {
+  console.log('isLoggedIn mainpage: ', isLoggedIn);
   return (
     <Container fluid>
-      {isLoggedIn ? 
-       ( <Row>
+      {isLoggedIn ? (
+        <Row>
           <Col>
             <ChannelDisplay />
           </Col>
@@ -17,10 +18,10 @@ const Mainpage = (userId, userName, isLoggedIn) => {
               isLoggedIn={isLoggedIn}
             />
           </Col>
-        </Row>)
-       : 
-       ( 'You are not authorized to view this page')
-      }
+        </Row>
+      ) : (
+        'You are not authorized to view this page'
+      )}
     </Container>
   );
 };

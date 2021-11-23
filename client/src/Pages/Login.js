@@ -3,30 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import axios from 'axios';
 
-const Login = ({ setIsLoggedIn, setToken, token }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const history = useHistory();
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('api/login', {
-        email,
-        password
-      });
-      setIsLoggedIn(true);
-      console.log('response from login: ', response);
-      const authToken = sessionStorage.setItem('token', response.data);
-      setToken(authToken);
-      console.log('token: ', token);
-
-      history.push('/');
-    } catch (error) {
-      console.log(error.response.data);
-    }
-  };
-
+const Login = ({ handleLogin, setEmail, setPassword }) => {
   return (
     <form onSubmit={handleLogin}>
       <h1 className='h3 mb-3 fw-normal'>Please sign in</h1>
