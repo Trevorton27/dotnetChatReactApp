@@ -9,7 +9,8 @@ namespace DotNetChatReactApp.Services
 {
     public interface IMessageService
     {
-       
+
         Task<List<Message>> GetAllMessages();
+        Message Create(Message message);
     }
 }
