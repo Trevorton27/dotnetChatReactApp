@@ -12,6 +12,7 @@ function App() {
   const [userName, setUserName] = useState('');
   const [userId, setUserId] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     getUser();
@@ -50,6 +51,7 @@ function App() {
                   userId={userId}
                   userName={userName}
                   isLoggedIn={isLoggedIn}
+                  token={token}
                 />
               ) : (
                 <Register />
