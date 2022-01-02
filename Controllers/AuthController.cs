@@ -56,7 +56,9 @@ namespace DotNetChatReactApp.Controllers
             {
                 HttpOnly = true
             });
-            return Ok(jwt);
+            return Ok(new {
+            message = "success"}
+            );
         }
 
         [HttpGet("user")]

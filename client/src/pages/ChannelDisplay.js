@@ -17,7 +17,6 @@ import axios from 'axios';
 
 const ChannelDisplay = ({
   redirectToLogin,
-  token,
   user,
   getUser,
   setChannelId,
@@ -64,7 +63,6 @@ const ChannelDisplay = ({
     await axios
       .get(`/api/getmessagesbychannel/${channelId}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
       })
@@ -77,7 +75,7 @@ const ChannelDisplay = ({
           console.log('error in getAllMessagesByChannel: ', error);
         }
       });
-  }, [channelId, token]);
+  }, [channelId]);
 
   useEffect(() => {
     getAllMessagesByChannel();
@@ -85,11 +83,7 @@ const ChannelDisplay = ({
 
   const getChannels = useCallback(async () => {
     await axios
-      .get('/api/channels', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      .get('/api/channels')
       .then((response) => {
         const channels = response.data;
         setChannels(channels);
@@ -103,15 +97,13 @@ const ChannelDisplay = ({
           return;
         }
       });
-  }, [redirectToLogin, token]);
+  }, [redirectToLogin]);
   console.log('user: ', user);
 
   useEffect(() => {
-    if (token) {
-      getChannels();
-      getUser();
-    }
-  }, [token, getChannels, getUser, channels.channelName]);
+    getChannels();
+    getUser();
+  }, [getChannels, getUser, channels.channelName]);
 
   // useEffect(() => {
   //   returnNewMessage();
